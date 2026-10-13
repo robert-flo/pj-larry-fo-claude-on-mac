@@ -223,3 +223,28 @@ Read the relevant `docs/*.md` page. The whole repo is designed so that any futur
 If Claude Code is running on Linux / a DGX / any non-Mac host and the Apple data lives on a remote Mac, stop and read `docs/remote-ssh.md` before Step 1. The install protocol above still runs — but locally on the Mac once, over SSH — and then the user sets up thin shims on the Linux side. TCC grants must cover `sshd-keygen-wrapper` (Full Disk Access) in addition to the user's terminal, and Automation grants must be warmed from the Mac's console (the TCC dialogs can't be clicked through SSH). The consent rule in `CONSENT.md` is unchanged; the `CONSENT-GATED SEND` banner streams through SSH stderr.
 
 Now go make the user's life easier. Carefully.
+
+## Fork personal (PJ-LARRY-fo-claude-on-mac)
+
+Fork personal de `nixfred/claude-on-mac`: helpers para que un agente use Mensajes, Correo, Calendario y Notas de macOS. Los cambios propios entran por PR a `personal`. La rama `upstream` es un espejo que mantiene el workflow `sync-personal-fork` (ADR 0024 de `robert-flo/fleet`), que cada día rebasa `personal` sobre ella. Nunca push, PR ni issue al upstream.
+
+### Agentes
+
+- **PM: Sura**, el agente principal de `cursor-agent`. Convierte lo que pide Robert en issues `ready-for-agent`, lanza a `wk-fo-claude-on-mac` y a `rv-fo-claude-on-mac` como subagentes y sigue cada issue hasta su PR.
+- **`wk-fo-claude-on-mac`** (`.cursor/agents/wk-fo-claude-on-mac.md`): toma un issue y lo lleva a un PR con prueba real.
+- **`rv-fo-claude-on-mac`** (`.cursor/agents/rv-fo-claude-on-mac.md`): revisa el PR en solo lectura antes del merge.
+
+### Agent skills
+
+#### Issue tracker
+
+GitHub Issues via gh CLI. External PRs are not triaged. See docs/agents/issue-tracker.md.
+Prefix issue titles with the issue number and a separator: <number> - <descriptive title>.
+
+#### Triage labels
+
+Canonical five-role triage vocabulary (needs-triage, needs-info, ready-for-agent, ready-to-merge, wontfix). See docs/agents/triage-labels.md.
+
+#### Domain docs
+
+Single-context repo layout (GLOSSARY.md + docs/adr/ at repo root). See docs/agents/domain.md.
